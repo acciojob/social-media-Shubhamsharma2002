@@ -1,7 +1,15 @@
 import React from 'react';
 
-export const NotificationsList = () => (
-  <div>
-    <h2>Notifications Page</h2>
-  </div>
-);
+export const NotificationsList = () => {
+  return (
+    <section className="notificationsList">
+      <h2>Notifications</h2>
+      <button className="button" style={{ marginBottom: '15px' }}>
+        Refresh Notifications
+      </button>
+      <div>
+        <p>No new notifications</p>
+      </div>
+    </section>
+  );
+};
