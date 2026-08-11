@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const UsersList = ({ users }) => {
   return (
-    <section>
+    <section className="users-list">
       <h2>Users</h2>
       <ul>
         {users.map((user) => (
