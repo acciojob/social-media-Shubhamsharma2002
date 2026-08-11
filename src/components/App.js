@@ -10,14 +10,14 @@ import '../styles/App.css';
 
 export default function App() {
   const [users] = useState([
-    { id: '1', name: 'Tianna Jenkins' },
-    { id: '2', name: 'Kevin Grant' },
-    { id: '3', name: 'Madison Price' },
+    { id: '0', name: 'Tianna Jenkins' },
+    { id: '1', name: 'Kevin Grant' },
+    { id: '2', name: 'Madison Price' },
   ]);
 
   const [posts, setPosts] = useState([
-    { id: '1', title: 'First Post!', content: 'Hello World!', user: '1' },
-    { id: '2', title: 'Second Post!', content: 'Testing Cypress flow.', user: '2' },
+    { id: '1', title: 'First Post!', content: 'Hello World!', user: '0' },
+    { id: '2', title: 'Second Post!', content: 'Testing Cypress flow.', user: '1' },
   ]);
 
   const addPost = (newPost) => {

@@ -6,25 +6,55 @@ export const PostsList = ({ posts, onAddPost, users }) => {
   const [content, setContent] = useState('');
   const [userId, setUserId] = useState('');
 
+  // Reactions state stored per post
+  const [reactions, setReactions] = useState(
+    posts.reduce((acc, post) => {
+      acc[post.id] = { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 };
+      return acc;
+    }, {})
+  );
+
   const handleSave = () => {
     if (title && content) {
+      const newId = Date.now().toString();
       onAddPost({
-        id: Date.now().toString(),
+        id: newId,
         title,
         content,
         user: userId,
-        reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
       });
+      setReactions((prev) => ({
+        ...prev,
+        [newId]: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
+      }));
       setTitle('');
       setContent('');
       setUserId('');
     }
   };
 
+  const handleReaction = (postId, type) => {
+    setReactions((prev) => ({
+      ...prev,
+      [postId]: {
+        ...(prev[postId] || { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 }),
+        [type]: ((prev[postId] && prev[postId][type]) || 0) + 1,
+      },
+    }));
+  };
+
+  const reactionEmoji = {
+    thumbsUp: '👍',
+    hooray: '🎉',
+    heart: '❤️',
+    rocket: '🚀',
+    eyes: '👀',
+  };
+
   return (
-    <section>
+    <section className="posts-list-container">
       <h2>Add a New Post</h2>
-      <form style={{ marginBottom: '20px' }}>
+      <form>
         <label htmlFor="postTitle">Post Title:</label>
         <input
           type="text"
@@ -60,24 +90,54 @@ export const PostsList = ({ posts, onAddPost, users }) => {
       </form>
 
       <div className="posts-list">
-        {posts.map((post) => (
-          <article className="post-excerpt" key={post.id}>
-            <h3>{post.title}</h3>
-            <p className="post-content">{post.content}</p>
+        {posts.map((post) => {
+          const author = users.find((u) => u.id === post.user);
+          const postReactions = reactions[post.id] || {
+            thumbsUp: 0,
+            hooray: 0,
+            heart: 0,
+            rocket: 0,
+            eyes: 0,
+          };
 
-            <div style={{ marginTop: '8px' }}>
-              <button className="reaction-button">👍 0</button>
-              <button className="reaction-button">🎉 0</button>
-              <button className="reaction-button">❤️ 0</button>
-              <button className="reaction-button">🚀 0</button>
-              <button className="reaction-button">👀 0</button>
-            </div>
+          return (
+            <article className="post-excerpt" key={post.id}>
+              {/* 1st Child: Title */}
+              <h3>{post.title}</h3>
 
-            <Link to={`/posts/${post.id}`} className="button muted-button" style={{ marginTop: '10px', display: 'inline-block' }}>
-              View Post
-            </Link>
-          </article>
-        ))}
+              {/* 2nd Child: Author metadata */}
+              <p className="post-author">
+                by {author ? author.name : 'Unknown author'}
+              </p>
+
+              {/* 3rd Child: Content */}
+              <p className="post-content">{post.content}</p>
+
+              {/* 4th Child: Reaction Buttons (Matches .posts-list > :nth-child(2) > :nth-child(4) > :nth-child(1)) */}
+              <div>
+                {Object.entries(reactionEmoji).map(([name, emoji]) => (
+                  <button
+                    key={name}
+                    type="button"
+                    className="reaction-button"
+                    onClick={() => handleReaction(post.id, name)}
+                  >
+                    {emoji} {postReactions[name]}
+                  </button>
+                ))}
+              </div>
+
+              {/* 5th Child: Link */}
+              <Link
+                to={`/posts/${post.id}`}
+                className="button muted-button"
+                style={{ marginTop: '10px', display: 'inline-block' }}
+              >
+                View Post
+              </Link>
+            </article>
+          );
+        })}
       </div>
     </section>
   );
