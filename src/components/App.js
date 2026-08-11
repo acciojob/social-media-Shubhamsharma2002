@@ -5,6 +5,7 @@ import { PostsList } from './PostsList';
 import { SinglePostPage } from './SinglePostPage';
 import { EditPostForm } from './EditPostForm';
 import { UsersList } from './UsersList';
+import { UserPage } from './UserPage';
 import { NotificationsList } from './NotificationsList';
 import '../styles/App.css';
 
@@ -12,12 +13,12 @@ export default function App() {
   const [users] = useState([
     { id: '0', name: 'Tianna Jenkins' },
     { id: '1', name: 'Kevin Grant' },
-    { id: '2', name: 'Madison Price' }
+    { id: '2', name: 'Madison Price' },
   ]);
 
   const [posts, setPosts] = useState([
     { id: '1', title: 'First Post!', content: 'Hello World!', user: '0' },
-    { id: '2', title: 'Second Post!', content: 'Testing Cypress flow.', user: '1' }
+    { id: '2', title: 'Second Post!', content: 'Testing Cypress flow.', user: '1' },
   ]);
 
   const addPost = (newPost) => {
@@ -58,6 +59,11 @@ export default function App() {
             exact
             path="/users"
             render={() => <UsersList users={users} />}
+          />
+          <Route
+            exact
+            path="/users/:userId"
+            render={() => <UserPage users={users} posts={posts} />}
           />
           <Route exact path="/notifications" component={NotificationsList} />
           <Redirect to="/" />
