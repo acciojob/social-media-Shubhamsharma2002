@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import BigCalendar from 'react-big-calendar';
+import Calendar from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/App.css';
 
-// Initialize momentLocalizer for react-big-calendar v0.20.1
-BigCalendar.momentLocalizer(moment);
+// Initialize and capture the localizer instance
+const localizer = Calendar.momentLocalizer(moment);
 
 const App = () => {
   const [events, setEvents] = useState([]);
@@ -130,8 +130,9 @@ const App = () => {
         </button>
       </div>
 
-      {/* Calendar Component */}
-      <BigCalendar
+      {/* Calendar Component with localizer prop */}
+      <Calendar
+        localizer={localizer}
         events={filteredEvents}
         startAccessor="start"
         endAccessor="end"
