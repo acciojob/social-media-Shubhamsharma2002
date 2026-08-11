@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import { Navbar } from './components/Navbar';
-import { PostsList } from './components/PostsList';
-import { UsersList } from './components/UsersList';
-import { NotificationsList } from './components/NotificationsList';
+import { Navbar } from './Navbar';
+import { PostsList } from './PostsList';
+import { UsersList } from './UsersList';
+import { NotificationsList } from './NotificationsList';
 import '../styles/App.css';
 
 export default function App() {
